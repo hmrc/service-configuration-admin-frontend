@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.serviceconfigurationadminfrontend
+package uk.gov.hmrc.serviceconfigurationadminfrontend.models
 
-import play.api.{Configuration, Environment}
-import play.api.inject.{Binding, Module => AppModule}
-
-import java.time.Clock
-
-class Module extends AppModule {
-
-  override def bindings(
-                         environment: Environment,
-                         configuration: Configuration
-                       ): Seq[Binding[?]] =
-    bind[Clock].toInstance(Clock.systemDefaultZone) :: // inject if current time needs to be controlled in unit tests
-      Nil
-
-}
+case class ServiceModel(
+                         serviceName: String,
+                         baseUrl: String,
+                         getAllUrlOverride: Option[String] = None,
+                         setAllOverride: Option[String] = None,
+                         setOneUrlOverride: Option[String] = None,
+                         keyOverrides: Option[Seq[String]] = None,
+                         isAllowed: Boolean = false
+                       )

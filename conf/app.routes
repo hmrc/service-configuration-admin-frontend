@@ -1,5 +1,14 @@
 # microservice specific routes
 
 ->         /hmrc-frontend           hmrcfrontend.Routes
-GET        /                        uk.gov.hmrc.serviceconfigurationadminfrontend.controllers.HelloWorldController.helloWorld
+
+GET         /index                  uk.gov.hmrc.serviceconfigurationadminfrontend.controllers.IndexController.onPageLoad
+
+GET         /                                              uk.gov.hmrc.serviceconfigurationadminfrontend.controllers.LoginOrGuestController.onPageLoad
+GET         /guest                                         uk.gov.hmrc.serviceconfigurationadminfrontend.controllers.LoginOrGuestController.guest
+GET         /sign-in                                       uk.gov.hmrc.serviceconfigurationadminfrontend.controllers.SignIn.onPageLoad
+GET         /logout                                        uk.gov.hmrc.serviceconfigurationadminfrontend.controllers.LogoutController.loggingOut
+GET         /logged-out                                    uk.gov.hmrc.serviceconfigurationadminfrontend.controllers.LogoutController.loggedOut
+
+
 GET        /assets/*file            controllers.Assets.versioned(path = "/public", file: Asset)

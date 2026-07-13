@@ -1,5 +1,5 @@
-/*
- * Copyright 2026 HM Revenue & Customs
+@*
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,22 +12,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package uk.gov.hmrc.serviceconfigurationadminfrontend
+@this(
+    main: uk.gov.hmrc.serviceconfigurationadminfrontend.views.html.templates.GovukLayoutWrapper,
+    button: GovukButton
+)
 
-import play.api.{Configuration, Environment}
-import play.api.inject.{Binding, Module => AppModule}
 
-import java.time.Clock
+@()(implicit messages: Messages, request: RequestHeader)
 
-class Module extends AppModule {
+@main(pageTitle = Some("You have been signed out"), isMenuEnabled = false) {
 
-  override def bindings(
-                         environment: Environment,
-                         configuration: Configuration
-                       ): Seq[Binding[?]] =
-    bind[Clock].toInstance(Clock.systemDefaultZone) :: // inject if current time needs to be controlled in unit tests
-      Nil
+    <h1 class="govuk-heading-xl">@messages("signedOut.title")</h1>
+
+    @button(Button(
+        content = Text(messages("loginOrGuest.signIn")),
+        href = Some("controllers.routes.LoginOrGuestController.onPageLoad.url")
+    ))
 
 }

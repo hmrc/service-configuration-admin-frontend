@@ -1,0 +1,52 @@
+@*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this(
+        main: uk.gov.hmrc.serviceconfigurationadminfrontend.views.html.templates.GovukLayoutWrapper,
+        table: GovukTable
+)
+@(myServices: Seq[String], otherServices: Seq[String])(implicit messages: Messages, request: RequestHeader)
+
+@main(pageTitle = Some(messages("service.header")), fullWidth = true) {
+
+    <p class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l" id="page-header">@messages("service.header")</h1>
+        </div>
+
+        <h2 class="govuk-heading-m" id="my-services">My services</h2>
+        <ul class="govuk-list">
+        @myServices.sorted.map { service =>
+            <li>
+                <a class="govuk-link govuk-body" href="@@{routes.AnyServiceController.onPageLoadNew(service)}" id="@service-link">
+                @service
+                </a>
+            </li>
+        }
+        </ul>
+
+        <h2 class="govuk-heading-m" id="my-services">Other services</h2>
+        <p class="govuk-body">Services that I can manage but not configured</p>
+        <ul class="govuk-list">
+        @otherServices.sorted.map { service =>
+            <li>@service</li>
+        }
+        </ul>
+
+
+    </div>
+    
+}

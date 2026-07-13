@@ -1,5 +1,5 @@
-/*
- * Copyright 2026 HM Revenue & Customs
+@*
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,22 +12,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package uk.gov.hmrc.serviceconfigurationadminfrontend
+@this(
+        main: uk.gov.hmrc.serviceconfigurationadminfrontend.views.html.templates.GovukLayoutWrapper
+)
+@(
+        pageTitle: String,
+        heading: String,
+        message: String
+)(
+        implicit messages: Messages,
+        request: RequestHeader
+)
 
-import play.api.{Configuration, Environment}
-import play.api.inject.{Binding, Module => AppModule}
-
-import java.time.Clock
-
-class Module extends AppModule {
-
-  override def bindings(
-                         environment: Environment,
-                         configuration: Configuration
-                       ): Seq[Binding[?]] =
-    bind[Clock].toInstance(Clock.systemDefaultZone) :: // inject if current time needs to be controlled in unit tests
-      Nil
-
+@main(
+    pageTitle = Some(messages(pageTitle))
+) {
+    <h1 class="govuk-heading-l">@messages(heading)</h1>
+    <p class="govuk-body">@messages(message)</p>
 }

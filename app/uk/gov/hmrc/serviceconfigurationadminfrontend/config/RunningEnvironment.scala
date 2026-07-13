@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.serviceconfigurationadminfrontend
+package uk.gov.hmrc.serviceconfigurationadminfrontend.config
 
-import play.api.{Configuration, Environment}
-import play.api.inject.{Binding, Module => AppModule}
+import play.api.Configuration
 
-import java.time.Clock
+import javax.inject.Inject
 
-class Module extends AppModule {
+class RunningEnvironment @Inject()(config: Configuration) {
 
-  override def bindings(
-                         environment: Environment,
-                         configuration: Configuration
-                       ): Seq[Binding[?]] =
-    bind[Clock].toInstance(Clock.systemDefaultZone) :: // inject if current time needs to be controlled in unit tests
-      Nil
+  def get: String = config.get[String]("features.environment")
+
+  def styling: String =
+    config.get[String]("features.environment") match {
+      case "Production" => "govuk-tag--red"
+      case "Qa" => "govuk-tag--yellow"
+      case "Staging" => "govuk-tag--yellow"
+      case _ => "govuk-tag--blue"
+    }
 
 }

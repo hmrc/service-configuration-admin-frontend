@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.serviceconfigurationadminfrontend
+package uk.gov.hmrc.serviceconfigurationadminfrontend.auth
 
-import play.api.{Configuration, Environment}
-import play.api.inject.{Binding, Module => AppModule}
+import uk.gov.hmrc.internalauth.client.*
 
-import java.time.Clock
+object PredicateBuilder {
+  case class RLALForService private[auth](service: String) {
+    def asAdmin: Predicate.Permission = forAction("ADMIN")
 
-class Module extends AppModule {
+    def forAction(action: String): Predicate.Permission =
+      Predicate.Permission(
+        Resource(
+          ResourceType("ddcn-live-admin-frontend"),
+          ResourceLocation(service),
+        ),
+        IAAction(action)
+      )
+  }
 
-  override def bindings(
-                         environment: Environment,
-                         configuration: Configuration
-                       ): Seq[Binding[?]] =
-    bind[Clock].toInstance(Clock.systemDefaultZone) :: // inject if current time needs to be controlled in unit tests
-      Nil
-
+  def forService(service: String): RLALForService = RLALForService(service)
 }
+
